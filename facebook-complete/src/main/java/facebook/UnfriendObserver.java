@@ -9,7 +9,7 @@ package facebook;
 public class UnfriendObserver implements Observer {
 	
 	public void update(Object o) {
-		Edge e = (Edge)o;
+		UnfriendEvent e = (UnfriendEvent)o;
 		System.out.println(e.getNode1() + " and " + e.getNode2() + " are no longer friends!");
 	}
 
