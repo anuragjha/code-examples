@@ -88,7 +88,7 @@ public class FacebookGraph implements Graph {
 		this.graph.removeEdge(node1, node2);
 		// remove edge also notifies observers
 		// of the state change
-		Edge edge = new Edge(node1, node2);
+		UnfriendEvent edge = new UnfriendEvent(node1, node2);
 		for(Observer o: observers) {
 			o.update(edge);
 		}

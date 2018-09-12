@@ -6,13 +6,13 @@ public class Test {
 
 	public static void main(String[] args) {
 			
-//		Graph g = new BasicGraph();
 
-		Graph g = (new GraphBuilder())
-		.setFileSuffix("edges")
-		.setLocation(Paths.get("facebook/"))
-		.build();
+//		Graph g = (new GraphBuilder())
+//		.setFileSuffix("edges")
+//		.setLocation(Paths.get("facebook/"))
+//		.build();
 		
+		Graph g = new BasicGraph();
 		g.addEdge(1, 2);
 		g.addEdge(1, 3);
 
