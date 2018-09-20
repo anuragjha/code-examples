@@ -32,9 +32,6 @@ public class CS601BlockingQueue<T> {
 		T item = items[start];
 		start = (start+1)%items.length;
 		size--;
-		if(size == items.length-1) {
-			this.notifyAll();
-		}
 		return item;
 	}
 
