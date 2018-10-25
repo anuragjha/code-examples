@@ -3,6 +3,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SimpleServer {
 
@@ -10,33 +12,50 @@ public class SimpleServer {
 
 	public static void main(String[] args) {
 
-		//try with resources ensures socket will be closed
-		try (
-				//open a server socket to listen on port 1024
-				ServerSocket server = new ServerSocket(1024);
-				//block on accept until a new client connects
-				Socket sock = server.accept();
-				//wrap the socket input stream in a BufferedReader
-				BufferedReader instream = new BufferedReader(new InputStreamReader(sock.getInputStream()))
-			) {
+		CS601Logger.setup();
+		Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+		
+		ServerSocket server = null;
+		try { 
+			server = new ServerSocket(1024);
+		} catch(IOException io) {
+			io.printStackTrace();
+		}
 
-			//initialize the message
-			String message = "";
-			//read the first line
-			String line = instream.readLine();
-			
-			//keep reading until end of transmission
-			while(line != null && !line.trim().equals(EOT)) {
-				//append to message
-				message += line + "\n";
-				//read next line
-				line = instream.readLine();
+
+		while(true) {
+			//try with resources ensures socket will be closed
+			try (
+					//open a server socket to listen on port 1024
+
+					//block on accept until a new client connects
+					Socket sock = server.accept();
+					//wrap the socket input stream in a BufferedReader
+					BufferedReader instream = new BufferedReader(new InputStreamReader(sock.getInputStream()))
+					) {
+
+				//initialize the message
+				String message = "";
+				//read the first line
+				String line = instream.readLine();
+
+				//keep reading until end of transmission
+				while(line != null && !line.trim().equals(EOT)) {
+					//append to message
+					message += line + "\n";
+					//read next line
+					line = instream.readLine();
+				}
+				
+				logger.log(Level.INFO, "Request Received: " + message);
+				
+				//display client message
+				System.out.println("Client says: " + message);
+
+			} catch(IOException ioe) {
+				ioe.printStackTrace();
+				logger.log(Level.SEVERE, ioe.getMessage());
 			}
-			//display client message
-			System.out.println("Client says: " + message);
-			
-		} catch(IOException ioe) {
-			ioe.printStackTrace();
 		}
 	}
 }

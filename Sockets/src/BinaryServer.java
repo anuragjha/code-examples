@@ -13,6 +13,8 @@ import java.net.Socket;
  *
  */
 public class BinaryServer {
+
+	//to test using curl: curl -X POST --data-binary @image.jpeg "http://localhost:1024"
 	
 	public static void main(String[] args) {
 		
@@ -53,9 +55,9 @@ public class BinaryServer {
 			System.out.println("Bytes expected: " + length + " Bytes read: " + read);			
 			
 			//save uploaded image to out.jpg
-			FileOutputStream fout = new FileOutputStream("out.jpg");
+			FileOutputStream fout = new FileOutputStream("out.jpeg");
 			fout.write(bytes);
-			fout.close();
+			fout.close(); 
 						
 			//send response to client
 			String headers = "HTTP/1.0 200 OK\n" +
