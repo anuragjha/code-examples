@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,18 +22,20 @@ public class BinaryServer {
 		try (
 				ServerSocket server = new ServerSocket(1024);
 				Socket sock = server.accept();
-				BufferedReader instream = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+				//BufferedReader instream = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+				InputStream instream = sock.getInputStream();
 				PrintWriter writer = new PrintWriter(sock.getOutputStream(), true)
 			) {
 
 			String message = "";
-			String line = instream.readLine();
-
+			String line = oneLine(instream);
+			System.out.println(line);
+			
 			int length = 0;
 			while(line != null && !line.trim().isEmpty()) {
 				
 				message += line + "\n";
-				line = instream.readLine();
+				line = oneLine(instream);
 				
 				//TODO: fix this messy hack
 				if(line.startsWith("Content-Length:")) {
@@ -48,9 +51,9 @@ public class BinaryServer {
 			byte[] bytes = new byte[length];
 			int read = sock.getInputStream().read(bytes);
 			
-//			while(read < length) {
-//				read += sock.getInputStream().read(bytes, read, (bytes.length-read));
-//			}
+			while(read < length) {
+				read += sock.getInputStream().read(bytes, read, (bytes.length-read));
+			}
 			
 			System.out.println("Bytes expected: " + length + " Bytes read: " + read);			
 			
@@ -74,5 +77,21 @@ public class BinaryServer {
 		} catch(IOException ioe) {
 			ioe.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Read a line of bytes until \n character.
+	 * @param instream
+	 * @return
+	 * @throws IOException
+	 */
+	private static String oneLine(InputStream instream) throws IOException {
+		ByteArrayOutputStream bout = new ByteArrayOutputStream();
+		byte b = (byte) instream.read();
+		while(b != '\n') {
+			bout.write(b);
+			b = (byte) instream.read();
+		}
+		return new String(bout.toByteArray());
 	}
 }
