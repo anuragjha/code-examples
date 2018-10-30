@@ -20,12 +20,12 @@ public class YelpClient {
 
 		//create secure connection 
 		HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
+		
 		//set HTTP method
 		connection.setRequestMethod("GET");		
 		connection.connect();
 
 		printHeaders(connection);
-
 		printBody(connection);
 
 	}

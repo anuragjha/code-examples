@@ -50,4 +50,8 @@ public class HTTPFetcher {
 		return request;
 	}
 	
+	public static void main(String[] args) {
+		System.out.println(download("www.yelp.com", "/biz/the-velo-rouge-cafe-san-francisco"));
+	}
+	
 }
