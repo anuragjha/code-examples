@@ -21,8 +21,8 @@ public class EchoServlet extends HttpServlet {
 		
 		out.println("<form action=\"echo\" method=\"post\">");
 		out.println("Message: <br/>");
-		out.println("<input type=\"text\" name=\"usermsg\"><br/>");
-		out.println("<input type=\"submit\" value=\"Submit\"></form>");		
+		out.println("<input type=\"text\" name=\"usermsg\"/><br/>");
+		out.println("<input type=\"submit\" value=\"Submit\"/></form>");		
 		
 //		out.println("<a href=http://localhost:8080/hello>Say Hello</a><br/>");
 //		out.println("<a href=http://localhost:8080/goodbye>Say Goodbye</a><br/>");
